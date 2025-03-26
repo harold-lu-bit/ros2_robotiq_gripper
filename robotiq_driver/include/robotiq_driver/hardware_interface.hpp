@@ -140,7 +140,6 @@ protected:
   std::atomic<bool> communication_thread_is_running_;
   void background_task();
 
-  double gripper_closed_pos_ = 0.0;
   double gripper_max_speed_ = 0.0;
   double gripper_max_force_ = 0.0;
 

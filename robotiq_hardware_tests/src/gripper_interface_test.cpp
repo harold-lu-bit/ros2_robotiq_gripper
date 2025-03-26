@@ -116,20 +116,24 @@ int main(int argc, char* argv[])
     driver->activate();
 
     std::cout << "The gripper is activated." << std::endl;
-    std::cout << "Closing the gripper..." << std::endl;
+    std::cout << "Setting the gripper force to 1 (with 255 as the max)." << std::endl;
+    driver->set_force(0x01);
 
+    std::cout << "Closing the gripper..." << std::endl;
     driver->set_gripper_position(0xFF);
     while (driver->gripper_is_moving())
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(800));
     }
+    std::cout << "Gripper closed at: " << std::to_string(static_cast<int>(driver->get_gripper_position())) << std::endl;
 
     std::cout << "Opening the gripper..." << std::endl;
     driver->set_gripper_position(0x00);
     while (driver->gripper_is_moving())
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(800));
     }
+    std::cout << "Gripper opened at: " << std::to_string(static_cast<int>(driver->get_gripper_position())) << std::endl;
 
     std::cout << "Half closing the gripper..." << std::endl;
     driver->set_gripper_position(0x80);

@@ -11,11 +11,8 @@
         use_fake_hardware:=false
         mock_sensor_commands:=false
         com_port:=/dev/ttyUSB0
-        gripper_speed_multiplier:=1.0
-        gripper_force_multiplier:=0.5
-        gripper_max_speed:=0.150
-        gripper_max_force:=235.0
-        gripper_closed_position:=0.7929">
+        gripper_max_speed:=255.0
+        gripper_max_force:=255.0">
 
         <ros2_control name="${name}" type="system">
             <!-- Plugins -->
@@ -40,10 +37,7 @@
                 </xacro:if>
                 <xacro:unless value="${use_fake_hardware or sim_gazebo or sim_isaac}">
                     <plugin>robotiq_driver/RobotiqGripperHardwareInterface</plugin>
-                    <param name="gripper_closed_position">${gripper_closed_position}</param>
                     <param name="COM_port">${com_port}</param>
-                    <param name="gripper_speed_multiplier">${gripper_speed_multiplier}</param>
-                    <param name="gripper_force_multiplier">${gripper_force_multiplier}</param>
                     <param name="gripper_max_speed">${gripper_max_speed}</param>
                     <param name="gripper_max_force">${gripper_max_force}</param>
                 </xacro:unless>
@@ -54,7 +48,7 @@
             <joint name="${prefix}robotiq_85_left_knuckle_joint">
                 <command_interface name="position" />
                 <state_interface name="position">
-                    <param name="initial_value">${gripper_closed_position}</param>
+                    <param name="initial_value">0.0</param>
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>

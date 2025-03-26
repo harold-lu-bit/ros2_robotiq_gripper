@@ -65,7 +65,6 @@ TEST(TestRobotiqGripperHardwareInterface, load_urdf)
               <param name="gripper_speed_multiplier">1.0</param>
               <param name="gripper_force_multiplier">0.5</param>
               <param name="COM_port">/dev/ttyUSB0</param>
-              <param name="gripper_closed_position">0.7929</param>
             </hardware>
             <joint name="robotiq_85_left_knuckle_joint">
               <command_interface name="position" />

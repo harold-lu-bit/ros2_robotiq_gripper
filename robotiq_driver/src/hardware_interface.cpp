@@ -44,8 +44,8 @@ const auto kLogger = rclcpp::get_logger("RobotiqGripperHardwareInterface");
 
 constexpr uint8_t kGripperMinPos = 3;
 constexpr uint8_t kGripperMaxPos = 230;
-constexpr double kGripperMaxSpeed = 0.150;  // mm/s
-constexpr double kGripperMaxforce = 235;    // N
+constexpr double kGripperMaxSpeed = 255;
+constexpr double kGripperMaxforce = 255;
 constexpr uint8_t kGripperRange = kGripperMaxPos - kGripperMinPos;
 
 constexpr auto kGripperCommsLoopPeriod = std::chrono::milliseconds{ 10 };
@@ -82,7 +82,6 @@ hardware_interface::CallbackReturn RobotiqGripperHardwareInterface::on_init(cons
   }
 
   // Read parameters.
-  gripper_closed_pos_ = stod(info_.hardware_parameters["gripper_closed_position"]);
   gripper_max_speed_ = info_.hardware_parameters.count("gripper_max_speed") ?
                            stod(info_.hardware_parameters["gripper_max_speed"]) :
                            kGripperMaxSpeed;
@@ -275,7 +274,7 @@ RobotiqGripperHardwareInterface::on_deactivate(const rclcpp_lifecycle::State& /*
 hardware_interface::return_type RobotiqGripperHardwareInterface::read(const rclcpp::Time& /*time*/,
                                                                       const rclcpp::Duration& /*period*/)
 {
-  gripper_position_ = gripper_closed_pos_ * (gripper_current_state_.load() - kGripperMinPos) / kGripperRange;
+  gripper_position_ = 1.0 * (gripper_current_state_.load() - kGripperMinPos) / kGripperRange;
 
   if (!std::isnan(reactivate_gripper_cmd_))
   {
@@ -296,7 +295,7 @@ hardware_interface::return_type RobotiqGripperHardwareInterface::read(const rclc
 hardware_interface::return_type RobotiqGripperHardwareInterface::write(const rclcpp::Time& /*time*/,
                                                                        const rclcpp::Duration& /*period*/)
 {
-  double gripper_pos = (gripper_position_command_ / gripper_closed_pos_) * kGripperRange + kGripperMinPos;
+  double gripper_pos = gripper_position_command_ * kGripperRange + kGripperMinPos;
   gripper_pos = std::max(std::min(gripper_pos, 255.0), 0.0);
   write_command_.store(uint8_t(gripper_pos));
   const auto gripper_speed_multiplier = std::clamp(fabs(gripper_speed_) / gripper_max_speed_, 0.0, 1.0);

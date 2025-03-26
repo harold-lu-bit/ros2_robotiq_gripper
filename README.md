@@ -45,3 +45,16 @@ ROS2 Distro | Branch | Build status | Documentation | Released packages
    Uses repos file: `$NAME$.repos`
 
 1. Source build - also core ROS packages are build from source. It shows potential issues in the mid future.
+
+### Advice for Beginers (Written by a beginer)
+
+1. launch controller with:
+   ```shell
+   source ros_ws/install/setup.bash
+   ros2 launch robotiq_description robotiq_control.launch.py
+   ```
+2. modify position, speed and force goal in `ros_ws/src/ros2_robotiq_gripper/robotiq_hardware_tests/src/robotiq_simple_test.py`.
+3. use the following command to see how it works:
+   ```
+   python3 ros_ws/src/ros2_robotiq_gripper/robotiq_hardware_tests/src/robotiq_simple_test.py
+   ```
